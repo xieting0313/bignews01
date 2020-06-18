@@ -93,6 +93,8 @@
             $('.modal-body').text(backData.msg);
             $('#myModal').modal();
             if (backData.code == 200) {
+              //把返回的token保存起来
+              localStorage.setItem('token',backData.token)
               // 模态框事件：hide.bs.modal （hide 方法调用之后立即触发该事件。）
               $('#myModal').on('hidden.bs.modal', function (e) {
                 // 6.登录成功跳转到首页
