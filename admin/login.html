@@ -38,6 +38,82 @@
     </div>
   </div>
 
+  <!-- bootstrap的模态框 -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">温馨提示</h4>
+        </div>
+        <div class="modal-body">
+          <p>One fine body&hellip;</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+  <script>
+    //入口函数
+    $(function () {
+      // 1.给登录按钮设置点击事件
+      $('.input_sub').on('click', function (e) {
+        // 2.去掉form表单中submit的默认提交行为
+        e.preventDefault();
+        // 3.获取用户输入的账号密码
+        var username = $('.input_txt').val().trim();
+        var password = $('.input_pass').val().trim();
+        // 4.非空判断
+        if (username == "" || password == "") {
+          // 弹出提示框
+          //弹出一个提示框，不用alert，用bootstrap模态框
+          //模态框使用方法：
+          $('.modal-body').text('账号密码不能为空哦！');
+          $('#myModal').modal();
+          // alert('账号密码不能为空哦!');
+          return;
+        };
+        // 5.发送ajax请求
+        $.ajax({
+          type: 'post',
+          url: 'http://localhost:8080/api/v1/admin/user/login',
+          data: {
+            username: username,
+            password: password
+          },
+          success: function (backData) {
+            // alert(backData.msg);
+            //弹出框，用的是bootstrap中的模态框
+            $('.modal-body').text(backData.msg);
+            $('#myModal').modal();
+            if (backData.code == 200) {
+              // 模态框事件：hide.bs.modal （hide 方法调用之后立即触发该事件。）
+              $('#myModal').on('hidden.bs.modal', function (e) {
+                // 6.登录成功跳转到首页
+                // alert('登录成功');
+                window.location.href = './index.html';
+
+              })
+
+
+            }
+
+          }
+
+        })
+
+
+      })
+
+    })
+  </script>
+
 </body>
 
 </html>
